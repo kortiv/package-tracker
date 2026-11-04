@@ -47,6 +47,11 @@ Testing gateway doubles are deterministic and never use the network.
 responses by scenario. `testing::FakePackageGateway` supplies package state
 directly to use cases.
 
+The model-answer use case treats malformed and policy-violating model output as
+an explicit human-escalation result. Its tests invoke the use case through
+`TestingApi`; presenter tests only verify mapping from response data to view
+models and do not import UI code.
+
 ## Build
 
 ```bash

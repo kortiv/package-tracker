@@ -12,6 +12,8 @@ namespace interface_adapters {
 
 class InMemoryPackageGateway final : public use_cases::PackageGateway {
 public:
+    void clear();
+
     void save(const entities::Package& package) override;
 
     std::optional<entities::Package> find_by_tracking_number(

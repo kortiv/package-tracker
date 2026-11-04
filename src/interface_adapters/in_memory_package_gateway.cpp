@@ -5,6 +5,10 @@
 
 namespace interface_adapters {
 
+void InMemoryPackageGateway::clear() {
+    packages_.clear();
+}
+
 void InMemoryPackageGateway::save(const entities::Package& package) {
     packages_.insert_or_assign(package.tracking_number(), package);
 }

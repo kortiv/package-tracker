@@ -29,3 +29,15 @@ target_include_directories(package_tracker_round_trip_test
 )
 
 add_test(NAME package_tracker_round_trip_test COMMAND package_tracker_round_trip_test)
+
+add_executable(package_tracker_testing_api_test
+    tests/testing_api_test.cpp
+    src/interface_adapters/in_memory_package_gateway.cpp
+)
+
+target_include_directories(package_tracker_testing_api_test
+    PRIVATE
+        src
+)
+
+add_test(NAME package_tracker_testing_api_test COMMAND package_tracker_testing_api_test)

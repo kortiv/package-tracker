@@ -6,7 +6,7 @@ namespace interface_adapters {
 
 struct AnswerViewModel {
     std::string answer;
-    bool human_escalation = false;
+    bool requires_human_review = false;
     std::string escalation_reason;
 };
 

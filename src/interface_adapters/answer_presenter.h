@@ -12,7 +12,7 @@ public:
     void present(const use_cases::AnswerOutputData& output_data) override {
         latest_view_model_ = AnswerViewModel{
             output_data.answer,
-            output_data.human_escalation,
+            output_data.requires_human_review,
             output_data.escalation_reason};
     }
 

@@ -4,7 +4,7 @@
 // adapters and use cases, but production code must not depend on this layer.
 
 #include "entities/package.h"
-#include "interface_adapters/in_memory_package_gateway.h"
+#include "testing/fake_package_gateway.h"
 #include "use_cases/track_package_input_boundary.h"
 #include "use_cases/track_package_input_data.h"
 #include "use_cases/track_package_interactor.h"
@@ -44,7 +44,7 @@ public:
     }
 
     void seed(const entities::Package& package) {
-        gateway_.save(package);
+        gateway_.seed(package);
     }
 
     void seed(std::string tracking_number, std::string status) {
@@ -63,7 +63,7 @@ public:
     }
 
 private:
-    interface_adapters::InMemoryPackageGateway gateway_;
+    FakePackageGateway gateway_;
     OutputCapture output_capture_;
     use_cases::TrackPackageInteractor interactor_;
     use_cases::TrackPackageInputBoundary& input_boundary_;

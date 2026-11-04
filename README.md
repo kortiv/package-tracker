@@ -42,6 +42,11 @@ api.seed("PKG-12345", "Delivered");
 const auto response = api.track_package("PKG-12345");
 ```
 
+Testing gateway doubles are deterministic and never use the network.
+`testing::FakeModelAdapter` scripts good, malformed, and policy-violating
+responses by scenario. `testing::FakePackageGateway` supplies package state
+directly to use cases.
+
 ## Build
 
 ```bash

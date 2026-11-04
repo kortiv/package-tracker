@@ -41,3 +41,14 @@ target_include_directories(package_tracker_testing_api_test
 )
 
 add_test(NAME package_tracker_testing_api_test COMMAND package_tracker_testing_api_test)
+
+add_executable(package_tracker_fake_gateway_test
+    tests/fake_gateway_test.cpp
+)
+
+target_include_directories(package_tracker_fake_gateway_test
+    PRIVATE
+        src
+)
+
+add_test(NAME package_tracker_fake_gateway_test COMMAND package_tracker_fake_gateway_test)

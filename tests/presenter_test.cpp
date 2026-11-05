@@ -26,7 +26,7 @@ void answer_presenter_preserves_human_escalation_for_the_view() {
 
     const auto& view_model = presenter.latest_view_model();
     assert(view_model.has_value());
-    assert(view_model->requires_human_review);
+    assert(view_model->human_escalation);
     assert(view_model->escalation_reason == "Model response violated policy");
 }
 

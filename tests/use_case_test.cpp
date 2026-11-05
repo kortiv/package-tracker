@@ -31,7 +31,7 @@ void valid_model_output_is_returned_as_an_answer() {
     const auto response = api.answer("What is the package status?");
 
     assert(response.answer == "Good answer");
-    assert(!response.requires_human_review);
+    assert(!response.human_escalation);
 }
 
 void malformed_model_output_is_off_ramped_to_a_human() {
@@ -41,7 +41,7 @@ void malformed_model_output_is_off_ramped_to_a_human() {
 
     const auto response = api.answer("Summarize the shipment.");
 
-    assert(response.requires_human_review);
+    assert(response.human_escalation);
     assert(response.escalation_reason == "Model response was malformed");
 }
 
@@ -52,7 +52,7 @@ void policy_violating_model_output_is_off_ramped_to_a_human() {
 
     const auto response = api.answer("Handle this request.");
 
-    assert(response.requires_human_review);
+    assert(response.human_escalation);
     assert(response.escalation_reason == "Model response violated policy");
 }
 

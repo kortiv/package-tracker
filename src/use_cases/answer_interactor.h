@@ -4,34 +4,12 @@
 #include "use_cases/answer_output_boundary.h"
 #include "use_cases/model_gateway.h"
 
-#include <optional>
 #include <stdexcept>
 #include <string>
 
 namespace use_cases {
 
 class AnswerInteractor final : public AnswerInputBoundary {
-private:
-    class ModelResponseParser {
-    public:
-        static std::optional<std::string> parse(const std::string& response) {
-            if (!is_well_formed(response)) {
-                return std::nullopt;
-            }
-
-            return response.substr(11, response.size() - 13);
-        }
-
-    private:
-        static bool is_well_formed(const std::string& answer) {
-            return answer.size() >= 11 &&
-                   answer.front() == '{' &&
-                   answer.back() == '}' &&
-                   answer.rfind("{\"answer\":\"", 0) == 0 &&
-                   answer.substr(answer.size() - 2) == "\"}";
-        }
-    };
-
 public:
     AnswerInteractor(
         ModelGateway& model_gateway,
@@ -55,8 +33,7 @@ public:
             return;
         }
 
-        const auto answer = ModelResponseParser::parse(response.answer);
-        if (!answer.has_value()) {
+        if (!is_well_formed(response.answer)) {
             output_boundary_.present(AnswerOutputData{
                 {},
                 true,
@@ -65,12 +42,24 @@ public:
         }
 
         output_boundary_.present(AnswerOutputData{
-            *answer,
+            extract_answer(response.answer),
             false,
             {}});
     }
 
 private:
+    static bool is_well_formed(const std::string& answer) {
+        return answer.size() >= 11 &&
+               answer.front() == '{' &&
+               answer.back() == '}' &&
+               answer.rfind("{\"answer\":\"", 0) == 0 &&
+               answer.substr(answer.size() - 2) == "\"}";
+    }
+
+    static std::string extract_answer(const std::string& response) {
+        return response.substr(11, response.size() - 13);
+    }
+
     ModelGateway& model_gateway_;
     AnswerOutputBoundary& output_boundary_;
 };

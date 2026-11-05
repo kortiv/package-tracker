@@ -8,6 +8,8 @@ Clean Architecture C++ package tracking example with an in-memory gateway.
 - **Use cases (`src/use_cases`)**: boundary interfaces, request/response data, and the interactor.
 - **Interface adapters (`src/interface_adapters`)**: controller, presenter, view model, and in-memory gateway implementation.
 - **Frameworks & drivers (`src/frameworks_drivers`)**: composition root (`main.cpp`) that wires concrete dependencies.
+- **Testing support (`src/testing`)**: a framework-independent API that composes
+  in-memory gateways, invokes input boundaries directly, and captures responses.
 
 ## Dependency Rule
 
@@ -26,6 +28,29 @@ Dependencies point inward only:
 4. The interactor sends `TrackPackageOutputData` through `TrackPackageOutputBoundary`.
 5. `TrackPackagePresenter` maps output to `TrackPackageViewModel`.
 6. The driver (`main.cpp`) reads the presenter view model and prints it.
+
+## Testing API
+
+`testing::TestingApi` is an outer test-support composition root. It bypasses the
+controller and presenter: tests seed the in-memory gateway, invoke the
+`TrackPackageInputBoundary`, and receive `TrackPackageOutputData` directly.
+It does not depend on the view, console, or framework/driver layer.
+
+```cpp
+testing::TestingApi api;
+api.seed("PKG-12345", "Delivered");
+const auto response = api.track_package("PKG-12345");
+```
+
+Testing gateway doubles are deterministic and never use the network.
+`testing::FakeModelAdapter` scripts good, malformed, and policy-violating
+responses by scenario. `testing::FakePackageGateway` supplies package state
+directly to use cases.
+
+The model-answer use case treats malformed and policy-violating model output as
+an explicit human-escalation result. Its tests invoke the use case through
+`TestingApi`; presenter tests only verify mapping from response data to view
+models and do not import UI code.
 
 ## Build
 

@@ -29,3 +29,48 @@ target_include_directories(package_tracker_round_trip_test
 )
 
 add_test(NAME package_tracker_round_trip_test COMMAND package_tracker_round_trip_test)
+
+add_executable(package_tracker_testing_api_test
+    tests/testing_api_test.cpp
+    src/interface_adapters/in_memory_package_gateway.cpp
+)
+
+target_include_directories(package_tracker_testing_api_test
+    PRIVATE
+        src
+)
+
+add_test(NAME package_tracker_testing_api_test COMMAND package_tracker_testing_api_test)
+
+add_executable(package_tracker_fake_gateway_test
+    tests/fake_gateway_test.cpp
+)
+
+target_include_directories(package_tracker_fake_gateway_test
+    PRIVATE
+        src
+)
+
+add_test(NAME package_tracker_fake_gateway_test COMMAND package_tracker_fake_gateway_test)
+
+add_executable(package_tracker_use_case_test
+    tests/use_case_test.cpp
+)
+
+target_include_directories(package_tracker_use_case_test
+    PRIVATE
+        src
+)
+
+add_test(NAME package_tracker_use_case_test COMMAND package_tracker_use_case_test)
+
+add_executable(package_tracker_presenter_test
+    tests/presenter_test.cpp
+)
+
+target_include_directories(package_tracker_presenter_test
+    PRIVATE
+        src
+)
+
+add_test(NAME package_tracker_presenter_test COMMAND package_tracker_presenter_test)
